@@ -2,11 +2,12 @@ import { BsPeopleFill } from "react-icons/bs"
 import { BiSolidCommentAdd } from "react-icons/bi"
 import { IoMdMore } from "react-icons/io"
 import Search from "../components/Search"
+import ChatList from "../components/ChatList"
 
 const Home = () => {
   return (
     <main className="h-screen flex min-w-1/2 overflow-x-auto">
-      <div className="flex-[1] border">
+      <div className="flex-[1] flex flex-col border">
         <div className="flex items-center py-3 px-2 border">
           {/* profile photo */}
           <img
@@ -19,6 +20,7 @@ const Home = () => {
           <IoMdMore size={25} color="var(--clr-accent)" className="opacity-60 " />
         </div>
         <Search/>
+        <ChatList/>
       </div>
       <div className="flex-[2] border"></div>
     </main>

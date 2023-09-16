@@ -1,19 +1,29 @@
 import { useForm } from "react-hook-form"
 import { Link } from "react-router-dom"
+import { useSignup } from "../hooks/useSignup"
 
 const Signup = () => {
+  const { signupFn, error, credentails } = useSignup()
   const signupForm = useForm()
   const {
     register,
     formState: { errors },
+    handleSubmit,
+    reset,
   } = signupForm
+
+  const handleSignup = async (formData) => {
+    await signupFn(formData)
+    if (!error) reset()
+  }
   return (
     <main className="flex flex-col justify-center items-center min-h-screen bg-gray-200 gap-4">
       <h1 className="text-5xl font-bold tracking-widest text-[var(--clr-accent)]">
         P<span className="text-red-500">i</span>Chat
       </h1>
       <div className="text-lg w-[396px] py-5 px-8 rounded-lg shadow-md bg-white">
-        <form action="" noValidate>
+        <form action="" noValidate onSubmit={handleSubmit(handleSignup)}>
+          {error && <div className="leading-10 bg-red-100 text-red-500 px-3 border border-red-500 rounded mb-2">{error}</div>}
           <div className="form-control mb-5">
             <label htmlFor="email" className="block text-base">
               Email
@@ -47,8 +57,7 @@ const Signup = () => {
           />
           <hr />
           <p className="my-3">
-            Already have an account?{" "}
-            <Link className="font-semibold text-[var(--clr-accent)] ">Log in</Link>
+            Already have an account? <Link className="font-semibold text-[var(--clr-accent)] ">Log in</Link>
           </p>
         </form>
       </div>
