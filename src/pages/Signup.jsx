@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { useSignup } from "../hooks/useSignup"
 
 const Signup = () => {
-  const { signupFn, error, credentails } = useSignup()
+  const { signupFn, error, loading } = useSignup()
   const signupForm = useForm()
   const {
     register,
@@ -52,7 +52,8 @@ const Signup = () => {
           </div>
           <input
             type="submit"
-            value="Sign up"
+            value={loading?"Signing up...":"Sign up"}
+            disabled={loading}
             className="w-full py-2 b rounded bg-[var(--clr-accent)] text-white text-lg font-semibold mb-7 cursor-pointer"
           />
           <hr />
