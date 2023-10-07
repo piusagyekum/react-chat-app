@@ -1,7 +1,8 @@
 import { useState } from "react"
-import { auth } from "../firebase"
+import { auth, db, usersColRef } from "../firebase"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { useAuthContext } from "../context/AuthContext"
+import { addDoc, doc, setDoc } from "firebase/firestore"
 
 export const useSignup = () => {
   const { dispatch } = useAuthContext()
@@ -10,12 +11,20 @@ export const useSignup = () => {
   const [loading, setLoading] = useState(false)
 
   const signupFn = async (payload) => {
-    const { email, password } = payload
+    const { email, password, username } = payload
     try {
       setError("")
       setLoading(true)
       const response = await createUserWithEmailAndPassword(auth, email, password)
-      console.log(response.user)
+      if (!response) throw response.error
+      //adding user to user collection
+      await setDoc(doc(db, "users", response.user.uid), {
+        uid: response.user.uid,
+        email: response.user.email,
+        displayName: username,
+      })
+      //creating chatlist for user
+      await setDoc(doc(db, "userChats", response.user.uid), {})
       setCredentials(response.user)
       dispatch({ type: "LOGIN", payload: response.user })
       localStorage.setItem("user", JSON.stringify(response.user))

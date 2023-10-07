@@ -10,7 +10,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const loginForm = useForm()
-  const [error, setError] = useState()
+  const [error, setError] = useState("")
   const {
     register,
     formState: { errors },
@@ -19,12 +19,13 @@ const Login = () => {
 
   const handleLogin = async (formData) => {
     try {
+      setError("")
       setLoading(true)
       const { email, password } = formData
       const response = await signInWithEmailAndPassword(auth, email, password)
-      console.log("response:", response)
       if (!response.user) throw Error(response.error)
       dispatch({ type: "LOGIN", payload: response.user })
+      localStorage.setItem("user", JSON.stringify(response.user))
       navigate("/home", { replace: true })
     } catch (error) {
       console.log("🚀 ~ file: Login.jsx:27 ~ handleLogin ~ error:", error)
@@ -70,14 +71,14 @@ const Login = () => {
           </div>
           <input
             type="submit"
-            value={loading ? "Logining in..." : "Log in"}
+            value={loading ? "Logging in..." : "Log in"}
             disabled={loading}
             className="w-full py-2 b rounded bg-accent/90  hover:bg-accent text-white text-lg font-semibold mb-7 cursor-pointer"
           />
           <hr />
           <p className="my-3">
             Don&apos;t have an account?{" "}
-            <Link className="font-semibold text-[var(--clr-accent)]" to={"signup"}>
+            <Link className="font-semibold text-[var(--clr-accent)]" to={"/signup"}>
               Sign Up
             </Link>
           </p>

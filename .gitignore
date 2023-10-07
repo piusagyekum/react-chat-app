@@ -15,6 +15,7 @@ dist-ssr
 
 src/pages/Test.jsx
 src/pages/ChildTest.jsx
+db.json
 
 # Editor directories and files
 .vscode/*

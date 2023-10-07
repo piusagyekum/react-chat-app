@@ -5,10 +5,14 @@ import Search from "../components/Search"
 import ChatList from "../components/ChatList"
 import { useState } from "react"
 import { useLogout } from "../hooks/useLogout"
+import SearchedUsersLIst from "../components/SearchedUsersLIst"
 
 const Home = () => {
   const { handleLogout } = useLogout()
   const [options, setOptions] = useState(false)
+  const [searchedUsers, setSearchedUsers] = useState([])
+  const [input, setInput] = useState("")
+
   return (
     <main className="h-screen flex min-w-1/2 overflow-x-auto">
       <div className="flex-[1] flex flex-col border">
@@ -30,13 +34,13 @@ const Home = () => {
             }}
           />
           {options && (
-            <div className="border absolute top-[60px] right-3 p-2 px-5 rounded font-medium cursor-pointer select-none" onClick={handleLogout}>
+            <div className="border absolute top-[60px] right-3 p-2 px-5 rounded font-medium cursor-pointer select-none logout" onClick={handleLogout}>
               Logout
             </div>
           )}
         </div>
-        <Search />
-        <ChatList />
+        <Search setSearchedUsers={setSearchedUsers} input={input} setInput={setInput} />
+        {input ? <SearchedUsersLIst searchedUsers={searchedUsers} /> : <ChatList />}
       </div>
       <div className="flex-[2] border"></div>
     </main>
